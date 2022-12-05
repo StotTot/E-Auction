@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 
-var Product = mongoose.model('Product', {
+let Product = mongoose.model('Product', {
     prodName: { type: String },
     sDesc: { type: String },
     dDesc: { type: String},

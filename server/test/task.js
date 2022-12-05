@@ -9,10 +9,10 @@ chai.use(chaiHttp)
 
 describe('E-Auction API', () => {
     /*
-    Test Post operation
+    Test adding a product
     */
    describe("POST /seller/add-product", () => {
-    it("It should POST the product", (done) => {
+    it ("It should POST the product", (done) => {
         let product = {
             prodName: "This is a test",
             sDesc: "test",
@@ -53,7 +53,7 @@ describe('E-Auction API', () => {
              done()
             })
     })
-    it('It should not POST the product', (done) => {
+    it ('It should not POST the product', (done) => {
         let product = {
             prodName: "This is a test",
             sDesc: "test",
@@ -81,4 +81,44 @@ describe('E-Auction API', () => {
             })
     })
    })
+
+   /*
+   Test adding bids
+   */
+   describe0("POST /buyer/place-bid", () => {
+    it ("It should POST the bid", (done) => {
+        let bid = {
+            buyerFName: "Guyyy",
+            buyerLName: "McGee",
+            buyerAdd: "111 Something rd",
+            buyerCity: "Somewhere",
+            buyerState: "State",
+            buyerPhone: 1111111111,
+            buyerPin: 0000,
+            buyerEmail: "buyer2@bids.com",
+            prodId: "638a1f87dfbb926a9232aafd",
+            bidAmount: 15.72,
+        }
+        chai.request('http://localhost:3000')
+            .post('/e-auction/api/v1/buyer/palce-bid')
+            .send(bid)
+            .end((err, res) => {
+                res.should.have.status(201)
+                res.body.should.be.a('object')
+                res.body.should.have.property('message').eql('Bid added!')
+                res.body.product.should.have.property('buyerFName')
+                res.body.product.should.have.property('buyerLName')
+                res.body.product.should.have.property('buyerAdd')
+                res.body.product.should.have.property('buyerCity')
+                res.body.product.should.have.property('buyerState')
+                res.body.product.should.have.property('buyerPhone')
+                res.body.product.should.have.property('buyerPin')
+                res.body.product.should.have.property('buyerEmail')
+                res.body.product.should.have.property('prodId')
+                res.body.product.should.have.property('bidAmount')
+            })
+
+    })
+   })
+
 })

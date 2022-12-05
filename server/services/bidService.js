@@ -22,7 +22,7 @@ function addBid(bid, product) {
 
 // fucntion to check if bid for email already exists
 function checkEmail(doc) {
-    
+    console.log("CHECKING EMAIL" + doc);
     if (doc.length > 0)
         throw new emailError('A bid for this email already exists.')
     else

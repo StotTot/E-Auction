@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 
-var Bid = mongoose.model('Bid', {
+let Bid = mongoose.model('Bid', {
     buyerFName: { type: String },
     buyerLName: { type: String },
     buyerAdd: { type: String },

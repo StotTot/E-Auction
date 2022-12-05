@@ -1,5 +1,4 @@
 const { dateError, deletionError } = require('../../exceptions')
-0
 // fucntion to verify product
 function addProd(product) {
 

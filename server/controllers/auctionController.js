@@ -1,6 +1,6 @@
 const express = require('express')
 const { dateError, emailError } = require('../../exceptions')
-var router = express.Router()
+const router = express.Router()
 
 const { Bid } = require('../models/bid')
 const { Product } = require('../models/product')
@@ -96,8 +96,8 @@ router.post('/buyer/palce-bid', (req, res) => {
             console.log(product);
             try {
                 // check if bid for email already exists
-                Bid.find({ email: req.body.buyerEmail, prodId: req.body.prodId }, (err, doc) => {
-                    
+                Bid.findOne({ email: req.body.buyerEmail, prodId: req.body.prodId }, (err, doc) => {
+                    console.log("BUYER MAIL" + req.body.buyerEmail);
                     try {
                         verifyBid.checkEmail(doc)
                         let valid = verifyBid.addBid(bid, product)

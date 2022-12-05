@@ -1,0 +1,6 @@
+{
+    "sonarlint.connectedMode.project": {
+        "connectionId": "stottot",
+        "projectKey": "StotTot_E-Auction"
+    }
+}
