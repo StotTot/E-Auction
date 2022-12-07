@@ -1,7 +1,7 @@
 let chai = require("chai")
 let chaiHttp = require("chai-http")
 let server = require("../index.js")
-
+let expect = chai.expect
 //Assertion style chai.should
 chai.should()
 
@@ -13,7 +13,7 @@ describe('E-Auction API', () => {
     */
    describe("POST /seller/add-product", () => {
     it ("It should POST the product", (done) => {
-        let product = {
+        let test_product = {
             prodName: "This is a test",
             sDesc: "test",
             dDesc: "test",
@@ -26,12 +26,12 @@ describe('E-Auction API', () => {
             sellerCity: "Concord",
             sellerState: "NH",
             sellerPhone: 1234567890,
-            sellerPin: 0000,
-            sellerEmail: "test@test.com"
+            sellerPin: 1234,
+            sellerEmail: "test21@test.com"
         }
         chai.request('http://localhost:3000')
             .post("/e-auction/api/v1/seller/add-product")
-            .send(product)
+            .send(test_product)
             .end((err, res) => {
                 res.should.have.status(201)
                 res.body.should.be.a('object')
@@ -54,7 +54,7 @@ describe('E-Auction API', () => {
             })
     })
     it ('It should not POST the product', (done) => {
-        let product = {
+        let test_product = {
             prodName: "This is a test",
             sDesc: "test",
             dDesc: "test",
@@ -67,12 +67,12 @@ describe('E-Auction API', () => {
             sellerCity: "Concord",
             sellerState: "NH",
             sellerPhone: 1234567890,
-            sellerPin: 0000,
+            sellerPin: 1234,
             sellerEmail: "test@test.com"
         }
         chai.request('http://localhost:3000')
             .post("/e-auction/api/v1/seller/add-product")
-            .send(product)
+            .send(test_product)
             .end((err, res) => {
                 res.should.have.status(400)
                 res.body.should.be.a('object')
@@ -83,42 +83,143 @@ describe('E-Auction API', () => {
    })
 
    /*
+   Test deleting a prodcut
+   */
+  describe('DELETE seller/product', () => {
+    it ('It should DELETE the product', (done) => {
+        chai.request('http://localhost:3000')
+            .delete("/e-auction/api/v1/seller/delete/638e6e3c998cdc7dfec1c2d5")
+            .end((err, res) => {
+                res.should.have.status(200)
+                res.body.should.be.a('object')
+                res.body.should.have.property('message').eql('Product deleted!')
+             done()
+            })
+    })
+  })
+
+
+   /*
    Test adding bids
    */
-   describe0("POST /buyer/place-bid", () => {
+   describe("POST /buyer/place-bid", () => {
     it ("It should POST the bid", (done) => {
-        let bid = {
+        const rand = Math.random().toString().substr(2, 8); 
+        let test_bid = {
             buyerFName: "Guyyy",
             buyerLName: "McGee",
             buyerAdd: "111 Something rd",
             buyerCity: "Somewhere",
             buyerState: "State",
             buyerPhone: 1111111111,
-            buyerPin: 0000,
-            buyerEmail: "buyer2@bids.com",
-            prodId: "638a1f87dfbb926a9232aafd",
+            buyerPin: 1234,
+            buyerEmail: rand + "@bids.com",
+            prodId: "6387b76860047ba1978f4b74",
             bidAmount: 15.72,
         }
         chai.request('http://localhost:3000')
             .post('/e-auction/api/v1/buyer/palce-bid')
-            .send(bid)
+            .send(test_bid)
             .end((err, res) => {
                 res.should.have.status(201)
                 res.body.should.be.a('object')
-                res.body.should.have.property('message').eql('Bid added!')
-                res.body.product.should.have.property('buyerFName')
-                res.body.product.should.have.property('buyerLName')
-                res.body.product.should.have.property('buyerAdd')
-                res.body.product.should.have.property('buyerCity')
-                res.body.product.should.have.property('buyerState')
-                res.body.product.should.have.property('buyerPhone')
-                res.body.product.should.have.property('buyerPin')
-                res.body.product.should.have.property('buyerEmail')
-                res.body.product.should.have.property('prodId')
-                res.body.product.should.have.property('bidAmount')
+                res.body.should.have.property('message').eql('Bid added for user: ' + rand + '@bids.com')
+                res.body.bid.should.have.property('buyerFName')
+                res.body.bid.should.have.property('buyerLName')
+                res.body.bid.should.have.property('buyerAdd')
+                res.body.bid.should.have.property('buyerCity')
+                res.body.bid.should.have.property('buyerState')
+                res.body.bid.should.have.property('buyerPhone')
+                res.body.bid.should.have.property('buyerPin')
+                res.body.bid.should.have.property('buyerEmail')
+                res.body.bid.should.have.property('prodId')
+                res.body.bid.should.have.property('bidAmount')
+                res.body.bid.buyerEmail.should.eql(test_bid.buyerEmail)
+                done()
             })
 
     })
    })
+
+   describe("POST /buyer/place-bid", () => {
+    it ("It should not POST the bid", (done) => {
+         
+        let test_bid = {
+            buyerFName: "Guyyy",
+            buyerLName: "McGee",
+            buyerAdd: "111 Something rd",
+            buyerCity: "Somewhere",
+            buyerState: "State",
+            buyerPhone: 1111111111,
+            buyerPin: 1234,
+            buyerEmail: "buyer22@bids.com",
+            prodId: "6387b76860047ba1978f4b74",
+            bidAmount: 15.72,
+        }
+        chai.request('http://localhost:3000')
+            .post('/e-auction/api/v1/buyer/palce-bid')
+            .send(test_bid)
+            .end((err, res) => {
+                res.should.have.status(400)
+                res.body.should.be.a('object')
+                res.body.should.have.property('message').eql('A bid for this email already exists.')
+                done()
+            })
+
+    })
+   })
+
+   /*
+   Getting bids
+   */
+   describe("GET /seller/show-bids", () => {
+    it ("It should get all of the bids for product 638a1f87dfbb926a9232aafd", (done) => {
+        chai.request('http://localhost:3000')
+            .get('/e-auction/api/v1/seller/show-bids/638a1f87dfbb926a9232aafd')
+            .end((err, res) => {
+                res.should.have.status(200)
+                res.body.should.be.a('object')
+                res.body.should.have.property('message').eql('Bids retrieved!')
+                expect(res.body.docs).to.have.lengthOf(9)
+                done()
+            })
+
+    })
+   })
+
+   /*
+   Getting producs
+    */
+   describe("GET /seller/products/test@test.com", () => {
+    it ("It should get all of the products for user test@test.com", (done) => {
+        chai.request('http://localhost:3000')
+            .get('/e-auction/api/v1/seller/products/test@test.com')
+            .end((err, res) => {
+                res.should.have.status(200)
+                res.body.should.be.a('object')
+                res.body.should.have.property('message').eql('Products retrieved!')
+                expect(res.body.docs).to.have.lengthOf(55)
+                done()
+            })
+
+    })
+   })
+   /*
+   Patching bid
+   */
+   describe("Patch /buyer/update-bid/6387b76860047ba1978f4b74/29753849@bids.com/$$$", () => {
+    it ("It should update bid for user 29753849@bids.com", (done) => {
+        chai.request('http://localhost:3000')
+            .patch('/e-auction/api/v1/buyer/update-bid/6387b76860047ba1978f4b74/29753849@bids.com/98.32')
+            .end((err, res) => {
+                res.should.have.status(200)
+                res.body.should.be.a('object')
+                res.body.should.have.property('message').eql('Bid updated!')
+                done()
+            })
+
+    })
+   })
+
 
 })

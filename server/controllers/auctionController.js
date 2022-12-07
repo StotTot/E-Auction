@@ -1,5 +1,5 @@
 const express = require('express')
-const { dateError, emailError } = require('../../exceptions')
+const { dateError, emailError } = require('../exceptions')
 const router = express.Router()
 
 const { Bid } = require('../models/bid')
@@ -90,20 +90,19 @@ router.post('/buyer/palce-bid', (req, res) => {
         prodId: req.body.prodId,
         bidAmount: req.body.bidAmount
     })
-    console.log(bid);
     Product.findById(req.body.prodId, (err, product) => {
         if (!err && product != null) {
-            console.log(product);
+
             try {
                 // check if bid for email already exists
-                Bid.findOne({ email: req.body.buyerEmail, prodId: req.body.prodId }, (err, doc) => {
-                    console.log("BUYER MAIL" + req.body.buyerEmail);
+                Bid.findOne({ buyerEmail: req.body.buyerEmail, prodId: req.body.prodId }, (err, doc) => {
                     try {
-                        verifyBid.checkEmail(doc)
+                        verifyBid.checkEmail(doc, req.body.buyerEmail)
                         let valid = verifyBid.addBid(bid, product)
+
                         if (valid == 1) {
                             bid.save((err, doc) => {
-                                if (!err) { res.status(201).json({ message: 'Bid added for user: ' + bid.buyerEmail }) }
+                                if (!err) { res.status(201).json({ message: 'Bid added for user: ' + bid.buyerEmail, bid }) }
                                 else { console.log('Error in adding bid: ' + JSON.stringify(err, undefined, 2)) }
                             })
                         }
@@ -134,8 +133,8 @@ router.patch('/buyer/update-bid/:productId/:buyerEmail/:newBid', (req, res) => {
                     Product.findById(req.params.productId, (err, product) => {
                         let valid = verifyBid.checkBidUpdate(req.params.newBid, doc, product)
                         if (valid == 1) {
-                            Bid.updateOne({ buyerEmail: req.params.buyerEmail, prodId: req.params.productId }, { bidAmount: req.params.newBid }, (err, doc) => {
-                                if (!err) { res.status(200).json({ message: 'Bid updated!'}) }
+                            Bid.updateOne({ buyerEmail: req.params.buyerEmail, prodId: req.params.productId }, { bidAmount: req.params.newBid }, (err, newBid) => {
+                                if (!err) { res.status(200).json({ message: 'Bid updated!' }) }
                                 else { console.log('Error in updating bid: ' + JSON.stringify(err, undefined, 2)) }
                             })
                         }
@@ -158,7 +157,7 @@ router.patch('/buyer/update-bid/:productId/:buyerEmail/:newBid', (req, res) => {
 // Get bids for product
 router.get('/seller/show-bids/:productId', (req, res) => {
     Bid.find({ prodId: req.params.productId }, (err, docs) => {
-        if (!err) { res.status(200).json({ message: 'Bids retreived!', docs }) }
+        if (!err) { res.status(200).json({ message: 'Bids retrieved!', docs }) }
         else { console.log('Error in retreiving bids: ' + JSON.stringify(err, undefined, 2)) }
     })
 })
@@ -166,7 +165,7 @@ router.get('/seller/show-bids/:productId', (req, res) => {
 // Get all products for seller
 router.get ('/seller/products/:sellerEmail', (req, res) => {
     Product.find({ sellerEmail: req.params.sellerEmail }, (err, docs) => {
-        if (!err) { res.status(200).json({ message: 'Products retreived!', docs }) }
+        if (!err) { res.status(200).json({ message: 'Products retrieved!', docs }) }
         else { console.log('Error in retreiving products: ' + JSON.stringify(err, undefined, 2)) }
     })
 })

@@ -1,4 +1,4 @@
-const { dateError, emailError } = require('../../exceptions')
+const { dateError, emailError } = require('../exceptions')
 
 // function to add a bid
 function addBid(bid, product) {
@@ -21,9 +21,10 @@ function addBid(bid, product) {
 }
 
 // fucntion to check if bid for email already exists
-function checkEmail(doc) {
-    console.log("CHECKING EMAIL" + doc);
-    if (doc.length > 0)
+function checkEmail(doc, email) {
+    if (!doc)
+        return 1
+    else if (doc.buyerEmail == email)
         throw new emailError('A bid for this email already exists.')
     else
         return 1

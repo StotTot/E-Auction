@@ -1,0 +1,28 @@
+<form class="email-form">
+    <mat-form-field class="email-full-width">
+      <mat-label>Email</mat-label>
+      <input type="email" matInput [formControl]="emailFormControl" (keyup.enter)="getProducts()" [errorStateMatcher]="matcher" [(ngModel)]="inputEmail" 
+             placeholder="Ex. pat@example.com">
+      <mat-hint>Hit Enter For The Product List To Populate</mat-hint>
+      <mat-error *ngIf="emailFormControl.hasError('email') && !emailFormControl.hasError('required')">
+        Please enter a valid email address
+      </mat-error>
+      <mat-error *ngIf="emailFormControl.hasError('required')">
+        Email is <strong>required</strong>
+      </mat-error>
+    </mat-form-field>
+</form>
+<br>
+<br>
+<br>
+<br>
+<mat-form-field appearance="fill">
+    <mat-label>Select A Product</mat-label>
+    <mat-select [(ngModel)]="currProduct" (ngModelChange)="update($event)">
+      <mat-option>None</mat-option>
+      <mat-option *ngFor="let product of products" [value]="product">{{product.prodName}}</mat-option>
+    </mat-select>
+  </mat-form-field>
+  
+  <p>You selected: {{currProduct}}</p>
+  

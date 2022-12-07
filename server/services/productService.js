@@ -1,4 +1,4 @@
-const { dateError, deletionError } = require('../../exceptions')
+const { dateError, deletionError } = require('../exceptions')
 // fucntion to verify product
 function addProd(product) {
 
