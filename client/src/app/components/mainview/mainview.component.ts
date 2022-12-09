@@ -31,13 +31,23 @@ export class MainviewComponent implements OnInit {
 
   matcher = new MyErrorStateMatcher();
 
-  currProduct:Product
+  currProduct:Product = {
+    prodName: "test",
+    sDesc: "",
+    dDesc: "",
+    cat: "",
+    startPrice: 0,
+    endDate: 1670533155
+  }
   inputEmail:string = 'ng@test.com'
   products:Product[] = []
   bids:Bid[] = []
+
+  displayedColumns: string[] = ['amount', 'name', 'email', 'mobile'];
+  dataSource:any
   
   update(e){
-    this.currProduct = e
+    this.currProduct = JSON.parse(JSON.stringify(e))
     console.log(JSON.stringify(this.currProduct));
     this.getBids()
   }
@@ -53,8 +63,12 @@ export class MainviewComponent implements OnInit {
 
   getBids() {
     console.log(this.currProduct)
+    console.log(this.currProduct.prodName);
+    
     this.bidService.getBids(this.currProduct._id).subscribe((data) => {
       this.bids = data.docs
+      this.dataSource = this.bids
+      this.bids.sort((a, b) => (a.bidAmount > b.bidAmount ? -1 : 1))
       console.log(JSON.stringify(this.bids));      
     })
   }

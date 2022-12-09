@@ -1,3 +1,4 @@
+<div class="container">
 <form class="email-form">
     <mat-form-field class="email-full-width">
       <mat-label>Email</mat-label>
@@ -14,15 +15,67 @@
 </form>
 <br>
 <br>
-<br>
-<br>
 <mat-form-field appearance="fill">
     <mat-label>Select A Product</mat-label>
     <mat-select [(ngModel)]="currProduct" (ngModelChange)="update($event)">
       <mat-option>None</mat-option>
       <mat-option *ngFor="let product of products" [value]="product">{{product.prodName}}</mat-option>
     </mat-select>
-  </mat-form-field>
-  
-  <p>You selected: {{currProduct}}</p>
-  
+</mat-form-field>
+<br>
+<br>
+<br>
+<mat-form-field appearance="fill">
+  <mat-label>Product Name</mat-label>
+  <textarea matInput class="labels" disabled>{{currProduct.prodName}}</textarea>
+</mat-form-field>
+<br>
+<mat-form-field appearance="fill">
+  <mat-label>Short Description</mat-label>
+  <textarea matInput class="labels" disabled >{{currProduct.sDesc}}</textarea>
+</mat-form-field>
+<br>
+<mat-form-field appearance="fill">
+  <mat-label>Detailed Description</mat-label>
+  <textarea matInput class="labels" disabled>{{currProduct.dDesc}}</textarea>
+</mat-form-field>
+<br>
+<mat-form-field appearance="fill">
+  <mat-label>Category</mat-label>
+  <textarea matInput class="labels" disabled>{{currProduct.cat}}</textarea>
+</mat-form-field>
+<br>
+<mat-form-field appearance="fill">
+  <mat-label>Starting Price</mat-label>
+  <textarea matInput class="labels" disabled>${{currProduct.startPrice}}</textarea>
+</mat-form-field>
+<br>
+<mat-form-field appearance="fill">
+  <mat-label>Bid End Date</mat-label>
+  <textarea cols="40" matInput class="labels" disabled>{{currProduct.endDate | epoch}}</textarea>
+</mat-form-field>
+</div>
+<mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+  <ng-container matColumnDef="amount">
+    <mat-header-cell *matHeaderCellDef> Bid Amount </mat-header-cell>
+    <mat-cell *matCellDef="let bid"> ${{bid.bidAmount}} </mat-cell>
+  </ng-container>
+
+  <ng-container matColumnDef="name">
+    <mat-header-cell *matHeaderCellDef> Name </mat-header-cell>
+    <mat-cell *matCellDef="let bid"> {{bid.buyerFName}} </mat-cell>
+  </ng-container>
+
+  <ng-container matColumnDef="email">
+    <mat-header-cell *matHeaderCellDef> Email </mat-header-cell>
+    <mat-cell *matCellDef="let bid"> {{bid.buyerEmail}} </mat-cell>
+  </ng-container>
+
+  <ng-container matColumnDef="mobile">
+    <mat-header-cell *matHeaderCellDef> Mobile </mat-header-cell>
+    <mat-cell *matCellDef="let bid"> {{bid.buyerPhone}} </mat-cell>
+  </ng-container>
+
+  <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+  <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+</mat-table>

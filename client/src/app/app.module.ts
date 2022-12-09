@@ -9,12 +9,14 @@ import { MatSelectModule } from '@angular/material/select';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
-
+import { EpochPipe } from './pipes/epoch.pipe';
+import {MatTableModule} from '@angular/material/table'; 
 
 @NgModule({
   declarations: [
     AppComponent,
-    MainviewComponent
+    MainviewComponent,
+    EpochPipe
   ],
   imports: [
     BrowserModule,
@@ -24,7 +26,8 @@ import { MatFormFieldModule } from '@angular/material/form-field';
     FormsModule,
     ReactiveFormsModule,
     MatInputModule,
-    MatFormFieldModule
+    MatFormFieldModule,
+    MatTableModule
   ],
   providers: [],
   bootstrap: [AppComponent]
