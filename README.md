@@ -8,4 +8,4 @@ A single page web app that is used by the seller to mangage their auctions.
 - Postman (Testing)
 - Mocha & Chai (Testing)
 # Screenshots
-![Postman: Successfully adding a product](https://i.imgur.com/0gYPLDC.png "Postman: Successfully adding a product")
+![Main Page](https://i.imgur.com/baoOfhL.png "Main page view")
