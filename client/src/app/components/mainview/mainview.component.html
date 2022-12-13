@@ -1,10 +1,14 @@
+<a href="https://github.com/StotTot">
+<img class="logo" src="https://avatars.githubusercontent.com/u/22485477?s=400&amp;u=8ddeb00cea2fe554394d7a4ac9c69cfe18f2a154&amp;v=4" alt="@StotTot" width="200" height="200" >
+</a>
+
 <div class="container">
+<div class="row">
 <form class="email-form">
     <mat-form-field class="email-full-width">
       <mat-label>Email</mat-label>
       <input type="email" matInput [formControl]="emailFormControl" (keyup.enter)="getProducts()" [errorStateMatcher]="matcher" [(ngModel)]="inputEmail" 
              placeholder="Ex. pat@example.com">
-      <mat-hint>Hit Enter For The Product List To Populate</mat-hint>
       <mat-error *ngIf="emailFormControl.hasError('email') && !emailFormControl.hasError('required')">
         Please enter a valid email address
       </mat-error>
@@ -12,16 +16,21 @@
         Email is <strong>required</strong>
       </mat-error>
     </mat-form-field>
+    <button mat-raised-button color="primary" (click)="getProducts()">Get Products</button>
+    
 </form>
 <br>
 <br>
 <mat-form-field appearance="fill">
-    <mat-label>Select A Product</mat-label>
+    <mat-label>Select a product</mat-label>
     <mat-select [(ngModel)]="currProduct" (ngModelChange)="update($event)">
-      <mat-option>None</mat-option>
+      
       <mat-option *ngFor="let product of products" [value]="product">{{product.prodName}}</mat-option>
     </mat-select>
 </mat-form-field>
+<br>
+<br>
+<br>
 <br>
 <br>
 <br>
@@ -54,7 +63,7 @@
   <mat-label>Bid End Date</mat-label>
   <textarea cols="40" matInput class="labels" disabled>{{currProduct.endDate | epoch}}</textarea>
 </mat-form-field>
-</div>
+
 <mat-table [dataSource]="dataSource" class="mat-elevation-z8">
   <ng-container matColumnDef="amount">
     <mat-header-cell *matHeaderCellDef> Bid Amount </mat-header-cell>
@@ -79,3 +88,5 @@
   <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
   <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
 </mat-table>
+</div>
+</div>

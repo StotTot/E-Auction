@@ -5,6 +5,7 @@ import { Bid } from 'src/app/models/bid';
 import { Product } from 'src/app/models/product';
 import { BidService } from 'src/app/services/bid.service';
 import { ProductService } from 'src/app/services/product.service';
+import {MatSnackBar} from '@angular/material/snack-bar';
 
 export class MyErrorStateMatcher implements ErrorStateMatcher {
   isErrorState(control: FormControl | null, form: FormGroupDirective | NgForm | null): boolean {
@@ -20,11 +21,9 @@ export class MyErrorStateMatcher implements ErrorStateMatcher {
 })
 export class MainviewComponent implements OnInit {
 
-  constructor(private productService:ProductService, private bidService:BidService) { }
+  constructor(private productService:ProductService, private bidService:BidService, private _snackBar: MatSnackBar) { }
 
   ngOnInit(): void {
-    // TODO document why this method 'ngOnInit' is empty
-    this.getProducts() 
   }
 
   emailFormControl = new FormControl('', [Validators.required, Validators.email]);
@@ -32,24 +31,35 @@ export class MainviewComponent implements OnInit {
   matcher = new MyErrorStateMatcher();
 
   currProduct:Product = {
-    prodName: "test",
+    prodName: "Please select a product",
     sDesc: "",
-    dDesc: "",
+    dDesc: "If no products appear in the dropdown menu then please enter your email into the box at the top and either hit the enter key or the button next to it.",
     cat: "",
     startPrice: 0,
     endDate: 1670533155
   }
-  inputEmail:string = 'ng@test.com'
+  inputEmail:string = ''
   products:Product[] = []
   bids:Bid[] = []
 
   displayedColumns: string[] = ['amount', 'name', 'email', 'mobile'];
   dataSource:any
   
+  
+  bidSnackBar() {
+    this._snackBar.open("Received bids for product: " + this.currProduct._id, null, {duration: 1000});
+  }
+
+  productSnackBar() {
+    this._snackBar.open("Received products for user: " + this.inputEmail, null, {duration: 1000})
+  }
+
+
   update(e){
     this.currProduct = JSON.parse(JSON.stringify(e))
     console.log(JSON.stringify(this.currProduct));
     this.getBids()
+    this.bidSnackBar()
   }
 
   getProducts() {
@@ -59,6 +69,7 @@ export class MainviewComponent implements OnInit {
       this.products = data.docs
       console.log(JSON.stringify(this.products));      
     })
+    this.productSnackBar()
   }
 
   getBids() {
