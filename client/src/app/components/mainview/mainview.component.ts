@@ -6,6 +6,7 @@ import { Product } from 'src/app/models/product';
 import { BidService } from 'src/app/services/bid.service';
 import { ProductService } from 'src/app/services/product.service';
 import {MatSnackBar} from '@angular/material/snack-bar';
+import { EpochPipe } from 'src/app/pipes/epoch.pipe';
 
 export class MyErrorStateMatcher implements ErrorStateMatcher {
   isErrorState(control: FormControl | null, form: FormGroupDirective | NgForm | null): boolean {
@@ -55,32 +56,25 @@ export class MainviewComponent implements OnInit {
   }
 
 
-  update(e){
+  update(e) {
     this.currProduct = JSON.parse(JSON.stringify(e))
-    console.log(JSON.stringify(this.currProduct));
     this.getBids()
     this.bidSnackBar()
   }
 
   getProducts() {
-    console.log(this.inputEmail);
     
-    this.productService.getProductsWithEmail(this.inputEmail).subscribe((data) => {
-      this.products = data.docs
-      console.log(JSON.stringify(this.products));      
+    this.productService.getProductsWithEmail(this.inputEmail).subscribe((data) => {      
+      this.products = data.docs     
     })
     this.productSnackBar()
   }
 
-  getBids() {
-    console.log(this.currProduct)
-    console.log(this.currProduct.prodName);
-    
+  getBids() {   
     this.bidService.getBids(this.currProduct._id).subscribe((data) => {
       this.bids = data.docs
       this.dataSource = this.bids
-      this.bids.sort((a, b) => (a.bidAmount > b.bidAmount ? -1 : 1))
-      console.log(JSON.stringify(this.bids));      
+      this.bids.sort((a, b) => (a.bidAmount > b.bidAmount ? -1 : 1))     
     })
   }
 

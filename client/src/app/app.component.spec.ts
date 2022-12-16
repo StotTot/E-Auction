@@ -19,13 +19,8 @@ describe('AppComponent', () => {
   it(`should have as title 'E-Auction'`, () => {
     const fixture = TestBed.createComponent(AppComponent);
     const app = fixture.componentInstance;
+    console.log(app);
+    
     expect(app.title).toEqual('E-Auction');
-  });
-
-  it('should render title', () => {
-    const fixture = TestBed.createComponent(AppComponent);
-    fixture.detectChanges();
-    const compiled = fixture.nativeElement as HTMLElement;
-    expect(compiled.querySelector('.content span')?.textContent).toContain('E-Auction app is running!');
   });
 });
