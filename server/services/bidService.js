@@ -1,6 +1,6 @@
 const { dateError, emailError } = require('../exceptions')
 
-// function to add a bid
+// function to verify a pending bid
 function addBid(bid, product) {
 
     let regExp = /^(\$?(:?\d+,?)+(?:.?\d+)?)$/

@@ -25,12 +25,13 @@ export class MainviewComponent implements OnInit {
   constructor(private productService:ProductService, private bidService:BidService, private _snackBar: MatSnackBar) { }
 
   ngOnInit(): void {
+    // nothing needs to be done on init
   }
 
   emailFormControl = new FormControl('', [Validators.required, Validators.email]);
 
   matcher = new MyErrorStateMatcher();
-
+  // product on initial page load
   currProduct:Product = {
     prodName: "Please select a product",
     sDesc: "",
@@ -55,26 +56,25 @@ export class MainviewComponent implements OnInit {
     this._snackBar.open("Received products for user: " + this.inputEmail, null, {duration: 1000})
   }
 
-
+  // populate drop-down menu
   update(e) {
     this.currProduct = JSON.parse(JSON.stringify(e))
     this.getBids()
     this.bidSnackBar()
   }
-
+  // get products
   getProducts() {
-    
     this.productService.getProductsWithEmail(this.inputEmail).subscribe((data) => {      
       this.products = data.docs     
     })
     this.productSnackBar()
   }
-
+  // get bids then sort bids by price
   getBids() {   
     this.bidService.getBids(this.currProduct._id).subscribe((data) => {
       this.bids = data.docs
+      this.bids.sort((a, b) => (a.bidAmount > b.bidAmount ? -1 : 1))
       this.dataSource = this.bids
-      this.bids.sort((a, b) => (a.bidAmount > b.bidAmount ? -1 : 1))     
     })
   }
 
