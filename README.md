@@ -9,6 +9,7 @@ A single page web app that is used by the seller to mangage their auctions.
 - Mocha & Chai (Testing)
 # Screenshots
 ![Main Page](https://i.imgur.com/baoOfhL.png "Main page view")
+![Swagger Documentation](https://i.imgur.com/Ml9eytK.png "Swagger")
 # Usage
 - ```git clone https://github.com/StotTot/E-Auction.git```
 - Unzip and cd to root directory.
