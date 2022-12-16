@@ -7685,3 +7685,5 @@ server/node_modules/.cache/nyc/auctionController-776ba32cc6dc5e1c55bb862815ed068
 server/node_modules/.cache/nyc/bidService-d4ec171ef4269eeb4cd98a52ca4d5c69210b06249dd84892f476cce0d7ab9984.js
 server/node_modules/.cache/nyc/exceptions-02de9066de49ac6493cf9a089ce9dd6f1a6a1b0bc478017c2a3af63c4550a337.js
 server/node_modules/.cache/nyc/productService-951de58326714e6e6e6d32fd7644856c70c76de44202d5dedd40de2b18ab93b3.js
+.vscode/
+.github/
