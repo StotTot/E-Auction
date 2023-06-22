@@ -1,5 +1,5 @@
 # E-Auction
-A single page web app that is used by the seller to mangage their auctions.
+A single page web app that is used by the seller to manage their auctions.
 # Technologies
 - NodeJS
 - MongoDB
